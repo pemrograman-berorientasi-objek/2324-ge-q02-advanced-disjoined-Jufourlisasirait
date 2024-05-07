@@ -357,18 +357,51 @@ public class Driver1 {
                     }
                 }
                 
-            } else if (inputSegments[0].equals("find-the-best-student")) {
-                //find-the-best-student#2020/2021#odd
-                //12S20002|B/A
-                //12S1101|12S20001|2020/2021|odd|B (enrollment)
-                String thauncourse = inputSegments[1];
-                String semester = inputSegments[2];
+            // } else if (inputSegments[0].equals("find-the-best-student")) {
+            //     //find-the-best-student#2020/2021#odd
+            //     //12S20002|B/A
+            //     //12S1101|12S20001|2020/2021|odd|B (enrollment)
+            //     String thauncourse = inputSegments[1];
+            //     String semester = inputSegments[2];
 
-                // List<String> studentid = new ArrayList<>();
-                // List<String> gradestu = new ArrayList<>();
+            //     // List<String> studentid = new ArrayList<>();
+            //     // List<String> gradestu = new ArrayList<>();
                 
+            // }
+        } else if (inputSegments[0].equals("find-the-best-student")) {
+            String thauncourse = inputSegments[1];
+            String semester = inputSegments[2];
+            
+            List<String> oddStudentGrade = new ArrayList<>();
+            List<String> evenStudentGrade = new ArrayList<>();
+        
+            for (Enrollment e : enrollments) {
+                if (e.getThauncourse().equals(thauncourse) && e.getSemester().equals(semester)) {
+                    if (e.getSemester().equals("odd")) {
+                        oddStudentGrade.add(e.get_nim() + "|" + e.getGrade());
+                    } else if (e.getSemester().equals("even")) {
+                        evenStudentGrade.add(e.get_nim() + "|" + e.getGrade());
+                    }
+                }
             }
+        
+            // Sort grades in descending order
+            Collections.sort(oddStudentGrade, Comparator.comparing((String s) -> gradeAsNumber(s.split("\\|")[1])).reversed());
+            Collections.sort(evenStudentGrade, Comparator.comparing((String s) -> gradeAsNumber(s.split("\\|")[1])).reversed());
+        
+            // Print the highest grade student
+            if (!oddStudentGrade.isEmpty()) {
+                String[] bestOddStudent = oddStudentGrade.get(0).split("\\|");
+                System.out.println(bestOddStudent[0] + "|" + bestOddStudent[1]);
+            }
+            if (!evenStudentGrade.isEmpty()) {
+                String[] bestEvenStudent = evenStudentGrade.get(0).split("\\|");
+                System.out.println(bestEvenStudent[0] + "|" + bestEvenStudent[1]);
+            }
+        }
+            
     }
+            
         
 
         for (Lecturer lecturer : lecturers) {
